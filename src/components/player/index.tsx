@@ -6,7 +6,6 @@ import { useRouter } from 'next/navigation'
 
 import { useEffect, useState } from 'react'
 
-import { useToast } from '@/components/ui/use-toast'
 import { useFile } from '@/context'
 
 import { Caption } from './caption'
@@ -21,7 +20,6 @@ interface PlayerInfo {
 
 export const Player = () => {
   const router = useRouter()
-  const { toast } = useToast()
 
   const [{ file, srt }] = useFile()
 
@@ -31,11 +29,6 @@ export const Player = () => {
 
   useEffect(() => {
     if (!isFileExist) {
-      toast({
-        description: '请先上传音频文件和字幕文件',
-        title: '未找到播放文件',
-        variant: 'destructive',
-      })
       router.replace('/')
       return
     }

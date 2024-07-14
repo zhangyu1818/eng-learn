@@ -1,8 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 
-import { Toaster } from '@/components/ui/toaster'
-import { FileProvider } from '@/context/file-context'
+import { Provider } from '@/components/provider'
 
 import './globals.css'
 
@@ -19,10 +18,9 @@ export default function RootLayout({
   children: React.ReactNode
 }>) {
   return (
-    <html lang='en' className='dark'>
+    <html lang='en'>
       <body className={inter.className}>
-        <FileProvider>{children}</FileProvider>
-        <Toaster />
+        <Provider>{children}</Provider>
       </body>
     </html>
   )

@@ -124,9 +124,7 @@ export const Caption = (props: CaptionProps) => {
                     onOpenChange={onDictOpenChange}
                     key={index}
                     text={value}
-                  >
-                    <span>{value}</span>
-                  </DictPopover>
+                  />
                 )
               }
               return <Fragment key={index}>{value}</Fragment>

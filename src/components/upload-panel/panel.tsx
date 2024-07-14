@@ -6,7 +6,7 @@ import { Upload } from './upload'
 
 export const UploadPanel = () => {
   return (
-    <div className='flex min-h-svh flex-col items-center gap-4 bg-background pt-[15vh]'>
+    <div className='flex min-h-svh flex-col items-center gap-4 pt-[15vh]'>
       <Upload>
         <div className='flex flex-col items-center gap-6'>
           <IconMusic className='size-12' />

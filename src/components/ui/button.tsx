@@ -1,58 +1,45 @@
-import { Slot } from '@radix-ui/react-slot'
-import { cva, type VariantProps } from 'class-variance-authority'
+import {
+  Button as RACButton,
+  composeRenderProps,
+  type ButtonProps as RACButtonProps,
+} from 'react-aria-components'
+import { tv } from 'tailwind-variants'
 
-import * as React from 'react'
+import React from 'react'
 
-import { cn } from '@/utils/cn'
+import { focusRing } from './utils'
 
-const buttonVariants = cva(
-  'inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium transition-colors focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:pointer-events-none disabled:opacity-50',
-  {
-    defaultVariants: {
-      size: 'default',
-      variant: 'default',
-    },
-    variants: {
-      size: {
-        default: 'h-9 px-4 py-2',
-        icon: 'size-9',
-        lg: 'h-10 rounded-md px-8',
-        sm: 'h-8 rounded-md px-3 text-xs',
-      },
-      variant: {
-        default:
-          'bg-primary text-primary-foreground shadow hover:bg-primary/90',
-        destructive:
-          'bg-destructive text-destructive-foreground shadow-sm hover:bg-destructive/90',
-        ghost: 'hover:bg-accent hover:text-accent-foreground',
-        link: 'text-primary underline-offset-4 hover:underline',
-        outline:
-          'border border-input bg-background shadow-sm hover:bg-accent hover:text-accent-foreground',
-        secondary:
-          'bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80',
-      },
-    },
-  },
-)
-
-export interface ButtonProps
-  extends React.ButtonHTMLAttributes<HTMLButtonElement>,
-    VariantProps<typeof buttonVariants> {
-  asChild?: boolean
+export interface ButtonProps extends RACButtonProps {
+  variant?: 'destructive' | 'icon' | 'primary' | 'secondary'
 }
 
-const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
-  ({ asChild = false, className, size, variant, ...props }, ref) => {
-    const Comp = asChild ? Slot : 'button'
-    return (
-      <Comp
-        className={cn(buttonVariants({ className, size, variant }))}
-        ref={ref}
-        {...props}
-      />
-    )
+const button = tv({
+  base: 'cursor-default rounded-lg border border-black/10 px-5 py-2 text-center text-sm shadow-[inset_0_1px_0_0_rgba(255,255,255,0.1)] transition dark:border-white/10 dark:shadow-none',
+  defaultVariants: {
+    variant: 'primary',
   },
-)
-Button.displayName = 'Button'
+  extend: focusRing,
+  variants: {
+    isDisabled: {
+      true: 'border-black/5 bg-gray-100 text-gray-300 dark:border-white/5 dark:bg-zinc-800 dark:text-zinc-600 forced-colors:text-[GrayText]',
+    },
+    variant: {
+      destructive: 'bg-red-700 text-white hover:bg-red-800 pressed:bg-red-900',
+      icon: 'flex items-center justify-center border-0 p-1 text-gray-600 hover:bg-black/[5%] pressed:bg-black/10 disabled:bg-transparent dark:text-zinc-400 dark:hover:bg-white/10 dark:pressed:bg-white/20',
+      primary: 'bg-blue-600 text-white hover:bg-blue-700 pressed:bg-blue-800',
+      secondary:
+        'bg-gray-100 text-gray-800 hover:bg-gray-200 pressed:bg-gray-300 dark:bg-zinc-600 dark:text-zinc-100 dark:hover:bg-zinc-500 dark:pressed:bg-zinc-400',
+    },
+  },
+})
 
-export { Button, buttonVariants }
+export function Button(props: ButtonProps) {
+  return (
+    <RACButton
+      {...props}
+      className={composeRenderProps(props.className, (className, renderProps) =>
+        button({ ...renderProps, className, variant: props.variant }),
+      )}
+    />
+  )
+}

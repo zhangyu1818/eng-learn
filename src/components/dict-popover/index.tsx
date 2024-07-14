@@ -1,32 +1,26 @@
 'use client'
 
 import { IconLoader } from '@tabler/icons-react'
+import { Button, Dialog, DialogTrigger } from 'react-aria-components'
 
 import { useState, useTransition } from 'react'
 
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover'
+import { Popover } from '@/components/ui/popover'
 import { searchDict } from '@/services/dict'
 
 import type { YoudaoResponse } from '@/services/response'
 
 export interface DictPopoverProps {
-  children: React.ReactNode
   onOpenChange?: (open: boolean) => void
   text: string
 }
 
 export const DictPopover = (props: DictPopoverProps) => {
-  const { children, onOpenChange, text } = props
+  const { onOpenChange, text } = props
   const [isPending, startTransition] = useTransition()
   const [dictResp, setDictResp] = useState<YoudaoResponse | null>(null)
 
-  const onClickText: React.MouseEventHandler<HTMLElement> = event => {
-    event.stopPropagation()
-
+  const onClickText = () => {
     if (dictResp) {
       return
     }
@@ -45,10 +39,8 @@ export const DictPopover = (props: DictPopoverProps) => {
     content = (
       <div>
         {word.trs?.map((tr, index) => (
-          <p className='p-2' key={index}>
-            {tr.pos && (
-              <i className='mr-4 text-secondary-foreground'>{tr.pos}</i>
-            )}
+          <p className='break-words p-2' key={index}>
+            {tr.pos && <i className='mr-4'>{tr.pos}</i>}
             {tr.tran}
           </p>
         ))}
@@ -57,11 +49,19 @@ export const DictPopover = (props: DictPopoverProps) => {
   }
 
   return (
-    <Popover onOpenChange={onOpenChange}>
-      <PopoverTrigger onClick={onClickText}>{children}</PopoverTrigger>
-      <PopoverContent className='p-4'>
-        {isPending ? <IconLoader className='size-6' /> : content}
-      </PopoverContent>
-    </Popover>
+    <DialogTrigger onOpenChange={onOpenChange}>
+      <Button onPress={onClickText}>{text}</Button>
+      <Popover showArrow className='min-w-[250px] max-w-[50vw]'>
+        <Dialog className='p-3'>
+          {isPending ? (
+            <div className='flex justify-center'>
+              <IconLoader className='size-6' />
+            </div>
+          ) : (
+            content
+          )}
+        </Dialog>
+      </Popover>
+    </DialogTrigger>
   )
 }
