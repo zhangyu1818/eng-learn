@@ -12,6 +12,7 @@
     "@tabler/icons-react": "^3.10.0",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
+    "from-to.js": "^0.0.1",
     "next": "14.2.5",
     "rc-upload": "^4.6.0",
     "rc-virtual-list": "^3.14.5",

@@ -23,7 +23,7 @@ export const Upload = (props: UploadProps) => {
   return (
     <UploadImp
       prefixCls='upload'
-      className={clsx('rounded-xl border p-36', {
+      className={clsx('rounded-xl border border-zinc-500 p-36', {
         'opacity-50 cursor-not-allowed': disable,
       })}
       accept={accept}
